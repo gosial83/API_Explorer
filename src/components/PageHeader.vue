@@ -2,7 +2,7 @@
   <div class="row pageHeaderContainer" >
 
     <div class="col-1" @click="router.push('/')" >
-      <img src="src/assets/api_explorer.png" height="80">
+      <img src="/src/assets/api_explorer.png" height="80">
     </div>
 
     <div class="col myAppName  fs-1 fw-bolder p-2"
