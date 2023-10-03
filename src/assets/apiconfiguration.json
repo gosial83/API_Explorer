@@ -1,0 +1,208 @@
+{
+  "StarWarsApi": {
+    "name": "Star Wars API",
+    "url" : "https://swapi.dev/api/",
+    "urlExample" : "https://swapi.dev/api/people/?page=2",
+    "endpoints": {
+      "people": {
+        "label": "People",
+        "url": "https://swapi.dev/api/people",
+        "columns": [
+          {
+            "name": "name",
+            "label": "Name"
+          },
+          {
+            "name": "gender",
+            "label": "Gender"
+          },
+          {
+            "name": "birth_year",
+            "label": "Year of birth"
+          }
+        ]
+      },
+      "starships": {
+        "label": "Starships",
+        "url": "https://swapi.dev/api/starships",
+        "columns": [
+          {
+            "name": "name",
+            "label": "Name"
+          },
+          {
+            "name": "model",
+            "label": "Model"
+          },
+          {
+            "name": "manufacturer",
+            "label": "Manufacturer"
+          },
+          {
+            "name": "crew",
+            "label": "Crew"
+          },
+          {
+            "name": "passengers",
+            "label": "Passengers"
+          }
+        ]
+      },
+      "planets": {
+        "label": "Planets",
+        "url": "https://swapi.dev/api/planets",
+        "columns": [
+          {
+            "name": "name",
+            "label": "Name"
+          },
+          {
+            "name": "population",
+            "label": "Population"
+          },
+          {
+            "name": "climate",
+            "label": "Climate"
+          },
+          {
+            "name": "terrain",
+            "label": "Terrain"
+          }
+
+        ]
+      }
+    },
+    "loading_gif": "StarWars-fy8R.gif",
+    "pagination" : {
+      "paginationType" : "onlyPageNumber",
+      "dataObjectName" : "results",
+      "paginationObjectName": "mainObject",
+      "paginationProperties" : {
+        "count" : "count",
+        "next" : "next",
+        "previous" : "previous"
+      },
+      "limitName": null,
+      "offsetName": null,
+      "defaultItemsPerPage" : null
+    },
+    "searching" : "https://swapi.dev/api/people/?search=r2"
+  },
+  "PokemonAPI": {
+    "name": "Pokemon API",
+    "url" : "https://pokeapi.co/api/v2/",
+    "urlExample" : "https://pokeapi.co/api/v2/pokemon?offset=20&limit=20",
+    "endpoints": {
+      "pokemon": {
+        "label": "Pokemon",
+        "url": "https://pokeapi.co/api/v2/pokemon",
+        "columns": [
+          {
+            "name": "name",
+            "label": "Name"
+          },
+          {
+            "name": "url",
+            "label": "Url"
+          }
+        ]
+      },
+      "ability": {
+        "label": "Ability",
+        "url": "https://pokeapi.co/api/v2/ability",
+        "columns": [
+          {
+            "name": "name",
+            "label": "Name"
+          },
+          {
+            "name": "url",
+            "label": "Url"
+          }
+        ]
+      }
+    },
+    "loading_gif": "pokemon-pikachu.gif",
+    "pagination" : {
+      "paginationType" : "limitAndOffset",
+      "dataObjectName" : "results",
+      "paginationObjectName": "mainObject",
+      "paginationProperties" : {
+        "count" : "count",
+        "next" : "next",
+        "previous" : "previous"
+      },
+      "limitName": "limit",
+      "offsetName": "offset",
+      "defaultItemsPerPage" : 20
+    }
+  },
+  "RickAndMortyAPI" : {
+    "name": "Rick And Morty API",
+    "url" : "https://rickandmortyapi.com/api/",
+    "urlExample" : "https://rickandmortyapi.com/api/character?page=2",
+    "endpoints" : {},
+    "loading_gif": "rick_and_morty.gif",
+    "pagination" : {
+      "paginationType" : "onlyPageNumber",
+      "dataObjectName" : "results",
+      "paginationObjectName": "info",
+      "paginationProperties" : {
+        "count" : "count",
+        "next" : "next",
+        "previous" : "prev"
+      },
+      "limitName": "limit/null",
+      "offsetName": "skip/null",
+      "defaultItemsPerPage" : null
+    },
+    "searching" : "https://rickandmortyapi.com/api/character/?name=rick&status=alive"
+  },
+  "BobsBurgersAPI" : {
+    "name": "Bob's Burgers API",
+    "url" : "https://bobsburgers-api.herokuapp.com/",
+    "urlExample" : "https://bobsburgers-api.herokuapp.com/characters?limit=20&skip=0",
+    "endpoints" : {},
+    "loading_gif": "bobsburgers-dance.gif",
+    "pagination" : {
+      "paginationType" : "limitAndOffset",
+      "dataObjectName" : null,
+      "paginationObjectName": "withoutPaginationData",
+      "paginationProperties" : null,
+      "limitName": "limit",
+      "offsetName": "skip",
+      "defaultItemsPerPage" : 20
+    },
+    "searching" : "https://bobsburgers-api.herokuapp.com/characters?hairColor=Blonde&id=50",
+    "order" : "https://bobsburgers-api.herokuapp.com/characters?sortBy=name&OrderBy=asc"
+  },
+  "IceAndFire" : {
+    "name": "Ice And Fire",
+    "url" : "https://anapioficeandfire.com/api/",
+    "urlExample" : "https://anapioficeandfire.com/api/characters?page=1&pageSize=10",
+    "endpoints" : {},
+    "loading_gif": "throne-game-of-thrones.gif",
+    "pagination" : {
+      "paginationType" : "pageAndPageSize",
+      "dataObjectName" : null,
+      "paginationObjectName": "linkHeaderInfo",
+      "paginationProperties" : {
+        "first" : "first",
+        "next" : "next",
+        "previous" : "prev",
+        "last" : "last"
+      },
+      "limitName": "limit",
+      "offsetName": "skip",
+      "defaultItemsPerPage" : 33,
+      "linkHeaderPropertyName" : "Link"
+    },
+    "searching" : "Filtering books\nYou can also include filter parameters in your request to the books endpoint by including parameters in the query string."
+  }
+
+
+}
+
+
+
+
