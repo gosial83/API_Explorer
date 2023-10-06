@@ -52,7 +52,7 @@ export default {
       }
       catch (e) {}
 
-      let path = window.location.origin+"/src/assets/" + fileName
+      let path = window.location.origin+"/" + fileName
       return path
     }
 

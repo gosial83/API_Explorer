@@ -6,7 +6,8 @@
     </div>
 
     <div class="col myAppName  fs-1 fw-bolder p-2"
-         @mouseenter="bump"
+         id="myAppName"
+         @mouseenter="bump('myAppName')"
          @click="router.push('/')"
     >
       API Explorer
