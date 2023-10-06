@@ -15,7 +15,7 @@ This application integrates with five example APIs and  allows for incorporating
 - **Detailed Data Views**: Choose any table row to access a detailed view of the record on a separate page.
 
 ## Live deployment
-API Explorer
+[**API Explorer**](http://18.185.142.132/)
 
 ## Technologies
 Project is created with:
