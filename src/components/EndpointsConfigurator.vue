@@ -41,77 +41,70 @@
     </div>
   </div>
 
-
 </div>
 </template>
 
-<script>
-import {useDataStore} from "@/stores/data";
-import {storeToRefs} from "pinia";
-import {useRouter} from "vue-router";
-import {gsap} from "gsap";
-import {SplitText} from "gsap/SplitText";
-import {useAnimation} from "@/animations/useAnimation.";
+<script setup>
+  import {useDataStore} from "@/stores/data";
+  import {storeToRefs} from "pinia";
+  import {useRouter} from "vue-router";
+  import {gsap} from "gsap";
+  import {SplitText} from "gsap/SplitText";
+  import {useAnimation} from "@/animations/useAnimation.";
 
-gsap.registerPlugin(SplitText);
+  gsap.registerPlugin(SplitText);
 
-export default {
-  name: "EndpointsConfigurator",
-  setup(){
-    const dataFromStore = useDataStore();
-    const { currentApiConfig, selectedApiKey } = storeToRefs(dataFromStore)
-    const { setEndpointItemToCurrentApiConfig, removeEndpointItemToCurrentApiConfig } = dataFromStore
-    const router = useRouter()
-    const { bump } = useAnimation();
+  const dataFromStore = useDataStore();
+  const { currentApiConfig, selectedApiKey } = storeToRefs(dataFromStore)
+  const { setEndpointItemToCurrentApiConfig, removeEndpointItemToCurrentApiConfig } = dataFromStore
+  const router = useRouter()
+  const { bump } = useAnimation();
 
-    function addEndpoint(endpointKey, endpointValue){
-      setEndpointItemToCurrentApiConfig(selectedApiKey.value, 'endpoints', endpointKey,  endpointValue)
-      setTimeout(()=>{
-        endpointIn(endpointKey)
-      }, 1);
-    }
-
-    function removeEndpoint(endpointKey){
-      endpointOut(endpointKey)
-      setTimeout(()=>{
-        removeEndpointItemToCurrentApiConfig(selectedApiKey.value, 'endpoints', endpointKey,)
-      }, 400);
-    }
-
-    function setColorForSelectedButton(endpointKey){
-      let classForButton="btn btn-outline-secondary my-mini_btn"
-      Object.entries(currentApiConfig.value[selectedApiKey.value]['endpoints']).forEach(entry => {
-        const [key, value] = entry;
-        if(endpointKey===key){
-          classForButton = "btn btn-dark my-mini_btn"
-        }
-      });
-    return classForButton
-    }
-
-    function endpointIn(endpointKey){
-      let id = document.getElementById(endpointKey)
-      gsap.from(id, {duration: 1, opacity: 0, x:200,  ease:'elastic.out(0.65, 1)', stagger: 0.2});
-    }
-
-    function endpointOut(endpointKey){
-      let id = document.getElementById(endpointKey)
-      gsap.to(id, {duration: 1, opacity:0, x:200,  ease:'elastic.out(0.65, 1)', });
-
-
-    }
-
-
-    return { router, currentApiConfig, selectedApiKey, addEndpoint, removeEndpoint, setColorForSelectedButton, bump}
+  function addEndpoint(endpointKey, endpointValue){
+    setEndpointItemToCurrentApiConfig(selectedApiKey.value, 'endpoints', endpointKey,  endpointValue)
+    setTimeout(()=>{
+      endpointIn(endpointKey)
+    }, 1);
   }
-}
+
+  function removeEndpoint(endpointKey){
+    endpointOut(endpointKey)
+    setTimeout(()=>{
+      removeEndpointItemToCurrentApiConfig(selectedApiKey.value, 'endpoints', endpointKey,)
+    }, 400);
+  }
+
+  function setColorForSelectedButton(endpointKey){
+    let classForButton="btn btn-outline-secondary my-mini_btn"
+    Object.entries(currentApiConfig.value[selectedApiKey.value]['endpoints']).forEach(entry => {
+      const [key, value] = entry;
+      if(endpointKey===key){
+        classForButton = "btn btn-dark my-mini_btn"
+      }
+    });
+    return classForButton
+  }
+
+  function endpointIn(endpointKey){
+    let id = document.getElementById(endpointKey)
+    gsap.from(id, {duration: 1, opacity: 0, x:200,  ease:'elastic.out(0.65, 1)', stagger: 0.2});
+  }
+
+  function endpointOut(endpointKey){
+    let id = document.getElementById(endpointKey)
+    gsap.to(id, {duration: 1, opacity:0, x:200,  ease:'elastic.out(0.65, 1)', });
+  }
+
 </script>
 
+
+
+
 <style scoped>
-.my-mini_btn{
-  width: 25px ;
-  height: 25px;
-  padding: 0 !important;
-  margin: 0 !important;
-}
+  .my-mini_btn{
+    width: 25px ;
+    height: 25px;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 </style>

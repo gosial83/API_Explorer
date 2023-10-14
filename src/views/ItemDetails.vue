@@ -50,70 +50,63 @@
 
 </template>
 
-<script>
-import {useDataStore} from "@/stores/data";
-import {storeToRefs} from "pinia";
-import {useRouter} from "vue-router";
-import {inject, ref, watch} from "vue";
-import Loading from "@/components/Loading.vue";
-import PropertyRow from "@/components/PropertyRow.vue";
-import Modal from "@/components/Modal.vue";
-import ModalExpandProperty from "@/components/ModalExpandProperty.vue";
-import {gsap} from "gsap";
-import {useAnimation} from "@/animations/useAnimation.";
+<script setup>
+  import {useDataStore} from "@/stores/data";
+  import {storeToRefs} from "pinia";
+  import {useRouter} from "vue-router";
+  import {inject, ref, watch} from "vue";
+  import Loading from "@/components/Loading.vue";
+  import PropertyRow from "@/components/PropertyRow.vue";
+  import ModalExpandProperty from "@/components/ModalExpandProperty.vue";
+  import {gsap} from "gsap";
+  import {useAnimation} from "@/animations/useAnimation.";
 
-export default {
-  name: "ItemDetails",
-  components: {ModalExpandProperty, PropertyRow, Loading, Modal},
-  setup(){
-    const dataFromStore = useDataStore();
-    const { currentApiConfig, selectedApiKey,selectedEndpointKey, currentDataInDetailsModal } = storeToRefs(dataFromStore)
-    const endpointApiService = inject('endpoint_api_service');
-    const router = useRouter()
-    const { bump } = useAnimation();
+  const dataFromStore = useDataStore();
+  const { currentApiConfig, selectedApiKey,selectedEndpointKey, currentDataInDetailsModal } = storeToRefs(dataFromStore)
+  const endpointApiService = inject('endpoint_api_service');
+  const router = useRouter()
+  const { bump } = useAnimation();
 
-    const backgroundForModal = ref(null)
-    let url =  currentApiConfig.value[selectedApiKey.value]['endpoints'][selectedEndpointKey.value]['row']['url']
+  const backgroundForModal = ref(null)
+  let url =  currentApiConfig.value[selectedApiKey.value]['endpoints'][selectedEndpointKey.value]['row']['url']
 
-    const imageItemToDisplay = ref({})
-    const itemToDisplay = ref({})
+  const imageItemToDisplay = ref({})
+  const itemToDisplay = ref({})
 
-    endpointApiService.fetchDetails(url).then((data) => {
-      Object.entries(data).forEach(entry => {
-        const [key, value] = entry;
-        if(key==='image'){
-          imageItemToDisplay.value[key]=value
-        }else {
-          itemToDisplay.value[key] = value;
-        }
-      });
-    })
-
-    watch(() => currentDataInDetailsModal.value.isBackgroudVisible, (newValue, oldValue) => {
-      if(currentDataInDetailsModal.value.isBackgroudVisible !==false){
-        openModal();
-      }else if(currentDataInDetailsModal.value.isBackgroudVisible === false){
-         closeModal();
+  endpointApiService.fetchDetails(url).then((data) => {
+    Object.entries(data).forEach(entry => {
+      const [key, value] = entry;
+      if(key==='image'){
+        imageItemToDisplay.value[key]=value
+      }else {
+        itemToDisplay.value[key] = value;
       }
+    });
+  })
 
-    }, { deep: true });
-
-    let tween = gsap.timeline();
-    window.gsap = gsap;
-
-    function openModal(){
-      tween.set(backgroundForModal.value, { opacity: 0,  display:'unset' });
-      tween.to(backgroundForModal.value, { opacity: 1, duration: 0.5,  });
+  watch(() => currentDataInDetailsModal.value.isBackgroudVisible, (newValue, oldValue) => {
+    if(currentDataInDetailsModal.value.isBackgroudVisible !==false){
+      openModal();
+    }else if(currentDataInDetailsModal.value.isBackgroudVisible === false){
+      closeModal();
     }
+  }, { deep: true });
 
-    function closeModal(){
-      tween.to(backgroundForModal.value, {  opacity: 0, display: 'none',  duration: 1});
-    }
+  let tween = gsap.timeline();
+  window.gsap = gsap;
 
-    return { currentApiConfig, selectedApiKey,selectedEndpointKey, itemToDisplay, imageItemToDisplay, currentDataInDetailsModal, backgroundForModal,  router, bump}
+  function openModal(){
+    tween.set(backgroundForModal.value, { opacity: 0,  display:'unset' });
+    tween.to(backgroundForModal.value, { opacity: 1, duration: 0.5,  });
   }
-}
+
+  function closeModal(){
+    tween.to(backgroundForModal.value, {  opacity: 0, display: 'none',  duration: 1});
+  }
+
 </script>
+
+
 
 <style scoped>
   .backgroundForModalExpand{

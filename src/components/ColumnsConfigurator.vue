@@ -9,35 +9,27 @@
   </div>
 </template>
 
-<script>
-import {useDataStore} from "@/stores/data";
-import {storeToRefs} from "pinia";
 
-export default {
-  name: "ColumnsConfigurator",
-  setup(){
+<script setup>
+  import {useDataStore} from "@/stores/data";
+  import {storeToRefs} from "pinia";
 
-    const dataFromStore = useDataStore();
-    const { currentApiConfig, selectedApiKey, selectedEndpointKey, currentColumnsNames } = storeToRefs(dataFromStore)
-    const { columnsCounter, addColumnToColumnsInCurrentApiConfig, removeColumnFromColumnsInCurrentApiConfig } = dataFromStore;
+  const dataFromStore = useDataStore();
+  const { currentApiConfig, selectedApiKey, selectedEndpointKey, currentColumnsNames } = storeToRefs(dataFromStore)
+  const { columnsCounter, addColumnToColumnsInCurrentApiConfig, removeColumnFromColumnsInCurrentApiConfig } = dataFromStore;
 
-    function isColumnInSelected(column){
-      return currentColumnsNames.value.includes(column.name)
-    }
-
-    function toggleSelection(column){
-      if (isColumnInSelected(column)){
-        removeColumnFromColumnsInCurrentApiConfig(selectedApiKey.value, selectedEndpointKey.value, 'columns', column )
-      }else{
-        addColumnToColumnsInCurrentApiConfig(selectedApiKey.value, selectedEndpointKey.value, 'columns', column )
-      }
-    }
-
-    return { columnsCounter, isColumnInSelected, toggleSelection, currentApiConfig,selectedApiKey, selectedEndpointKey, currentColumnsNames,  }
+  function isColumnInSelected(column){
+    return currentColumnsNames.value.includes(column.name)
   }
-}
+
+  function toggleSelection(column){
+    if (isColumnInSelected(column)){
+      removeColumnFromColumnsInCurrentApiConfig(selectedApiKey.value, selectedEndpointKey.value, 'columns', column )
+    }else{
+      addColumnToColumnsInCurrentApiConfig(selectedApiKey.value, selectedEndpointKey.value, 'columns', column )
+    }
+  }
+
 </script>
 
-<style scoped>
 
-</style>
