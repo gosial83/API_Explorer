@@ -5,16 +5,10 @@
 </template>
 
 
-<script>
+<script setup>
 import EndpointsConfigurator from "@/components/EndpointsConfigurator.vue";
-
-export default {
-  components: {EndpointsConfigurator},
-  setup() {
-    return {   }
-  }
-}
 </script>
+
 
 <style scoped>
   .endpointsConfigView{

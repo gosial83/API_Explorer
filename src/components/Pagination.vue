@@ -88,98 +88,90 @@
 
   </div>
 
-
-
-
 </template>
 
-<script>
-import {useDataStore} from "@/stores/data";
-import {storeToRefs} from "pinia";
-import {computed, inject, ref} from "vue";
-import {usePaginationData} from "@/stores/paginationData";
+
+<script setup>
+  import {useDataStore} from "@/stores/data";
+  import {storeToRefs} from "pinia";
+  import {inject, ref} from "vue";
+  import {usePaginationData} from "@/stores/paginationData";
+
+  const dataFromStore = useDataStore();
+  const { currentApiConfig, selectedApiKey, selectedEndpointKey  } = storeToRefs(dataFromStore)
+
+  const paginationDataFromStore = usePaginationData() ;
+  const { paginationData } = storeToRefs(paginationDataFromStore)
+  const {  setPaginationValue } = paginationDataFromStore;
+
+  const endpointApiService = inject('endpoint_api_service');
+  const selectedItemsPerPage = ref(20)
+  const optionsForItemsPerPage = ref([
+    { text: '10', value: 10 },
+    { text: '20', value: 20 },
+    { text: '30', value: 30 }
+  ])
 
 
-export default {
-  name: "Pagination",
-  setup() {
-    const dataFromStore = useDataStore();
-    const { currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter  } = storeToRefs(dataFromStore)
-
-    const paginationDataFromStore = usePaginationData() ;
-    const { paginationData } = storeToRefs(paginationDataFromStore)
-    const {  setPaginationValue } = paginationDataFromStore;
-
-    const endpointApiService = inject('endpoint_api_service');
-    const selectedItemsPerPage = ref(20)
-    const optionsForItemsPerPage = ref([
-      { text: '10', value: 10 },
-      { text: '20', value: 20 },
-      { text: '30', value: 30 }
-    ])
-
-
-    function paginationTypeWithPageSize (){
-      if (currentApiConfig.value[selectedApiKey.value]['pagination']['paginationType']==='limitAndOffset'
-          ||  currentApiConfig.value[selectedApiKey.value]['pagination']['paginationType']==='pageAndPageSize'){
-        return true
-      }else{
-        return false
-      }
+  function paginationTypeWithPageSize (){
+    if (currentApiConfig.value[selectedApiKey.value]['pagination']['paginationType']==='limitAndOffset'
+        ||  currentApiConfig.value[selectedApiKey.value]['pagination']['paginationType']==='pageAndPageSize'){
+      return true
+    }else{
+      return false
     }
-
-    function goToLastPage(){
-      if ( paginationData.value.lastUrl !== null){
-        endpointApiService.fetchDataFromEndpoint(paginationData.value.lastUrl)
-        setPaginationValue("currentPageNumber", paginationData.value.lastPageNumber)
-      } else{
-        goToPageNumber(paginationData.value.lastPageNumber)
-      }
-    }
-
-    function goToFirstPage(){
-      if ( paginationData.value.firstUrl !== null){
-        endpointApiService.fetchDataFromEndpoint(paginationData.value.firstUrl)
-        setPaginationValue("currentPageNumber", 1)
-      } else{
-        goToPageNumber(1)
-      }
-
-    }
-
-    function setSelectedItemsPerPage(){
-      setPaginationValue('itemsPerPage', selectedItemsPerPage.value)
-      setPaginationValue('currentPageNumber', 1)
-      let url = endpointApiService.getUrlForEndpoint(selectedApiKey.value, selectedEndpointKey.value)
-      endpointApiService.fetchDataFromEndpoint(url)
-    }
-
-    function goToNextPage(){
-      let currentPageNumber = paginationData.value['currentPageNumber']
-      let nextUrl = paginationData.value['nextUrl']
-      endpointApiService.fetchDataFromEndpoint(nextUrl)
-      setPaginationValue("currentPageNumber", currentPageNumber+1)
-    }
-
-
-    function goToPreviousPage(){
-      let currentPageNumber = paginationData.value['currentPageNumber']
-      let previousUrl = paginationData.value['previousUlr']
-      endpointApiService.fetchDataFromEndpoint(previousUrl)
-      setPaginationValue("currentPageNumber", currentPageNumber-1)
-    }
-
-    function goToPageNumber(number){
-      setPaginationValue("currentPageNumber", number)
-      let nextUrl = endpointApiService.getUrlToPage(number)
-      endpointApiService.fetchDataFromEndpoint(nextUrl)
-    }
-
-    return { currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter, goToNextPage, goToPreviousPage, goToPageNumber,
-      paginationData, selectedItemsPerPage, optionsForItemsPerPage, setSelectedItemsPerPage, goToLastPage, goToFirstPage, paginationTypeWithPageSize  }
   }
-}
+
+  function goToLastPage(){
+    if ( paginationData.value.lastUrl !== null){
+      endpointApiService.fetchDataFromEndpoint(paginationData.value.lastUrl)
+      setPaginationValue("currentPageNumber", paginationData.value.lastPageNumber)
+    } else{
+      goToPageNumber(paginationData.value.lastPageNumber)
+    }
+  }
+
+  function goToFirstPage(){
+    if ( paginationData.value.firstUrl !== null){
+      endpointApiService.fetchDataFromEndpoint(paginationData.value.firstUrl)
+      setPaginationValue("currentPageNumber", 1)
+    } else{
+      goToPageNumber(1)
+    }
+
+  }
+
+  function setSelectedItemsPerPage(){
+    setPaginationValue('itemsPerPage', selectedItemsPerPage.value)
+    setPaginationValue('currentPageNumber', 1)
+    let url = endpointApiService.getUrlForEndpoint(selectedApiKey.value, selectedEndpointKey.value)
+    endpointApiService.fetchDataFromEndpoint(url)
+  }
+
+  function goToNextPage(){
+    let currentPageNumber = paginationData.value['currentPageNumber']
+    let nextUrl = paginationData.value['nextUrl']
+    endpointApiService.fetchDataFromEndpoint(nextUrl)
+    setPaginationValue("currentPageNumber", currentPageNumber+1)
+  }
+
+
+  function goToPreviousPage(){
+    let currentPageNumber = paginationData.value['currentPageNumber']
+    let previousUrl = paginationData.value['previousUlr']
+    endpointApiService.fetchDataFromEndpoint(previousUrl)
+    setPaginationValue("currentPageNumber", currentPageNumber-1)
+  }
+
+  function goToPageNumber(number){
+    setPaginationValue("currentPageNumber", number)
+    let nextUrl = endpointApiService.getUrlToPage(number)
+    endpointApiService.fetchDataFromEndpoint(nextUrl)
+  }
+
 </script>
+
+
 
 <style scoped>
 

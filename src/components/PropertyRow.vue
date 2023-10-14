@@ -35,76 +35,64 @@
 
 </template>
 
-<script>
-import {ref, onMounted, nextTick  } from "vue";
-import Modal from "@/components/Modal.vue";
-import {useDataStore} from "@/stores/data";
-import {storeToRefs} from "pinia";
-export default {
-  name: "PropertyRow",
-  components: {
-    Modal
-  },
-  props: [ 'fieldKey',  'fieldValue'],
-  setup(props) {
+<script setup>
+  import {ref, onMounted, nextTick  } from "vue";
+  import {useDataStore} from "@/stores/data";
+  import {storeToRefs} from "pinia";
 
-    const dataFromStore = useDataStore();
-    const { currentApiConfig, selectedApiKey, selectedEndpointKey, currentColumnsNames } = storeToRefs(dataFromStore)
-    const { setCurrentDataInDetailsModal,  } = dataFromStore;
+  const props = defineProps(['fieldKey', 'fieldValue']);
 
-    const fieldValeType = ref(typeof props.fieldValue)
-    const prettyPrintedJSON= ref(null)
+  const dataFromStore = useDataStore();
+  const { currentApiConfig, selectedApiKey, selectedEndpointKey } = storeToRefs(dataFromStore)
+  const { setCurrentDataInDetailsModal  } = dataFromStore;
 
-    const isBoxWithJsonScrollable = ref(false);
-    const scrollableContent = ref(null);
+  const fieldValeType = ref(typeof props.fieldValue)
+  const prettyPrintedJSON= ref(null)
 
-    const checkScrollability = () => {
+  const isBoxWithJsonScrollable = ref(false);
+  const scrollableContent = ref(null);
 
-      nextTick(() => {
-        const content = scrollableContent.value;
+  const checkScrollability = () => {
 
-        if (content && content.scrollHeight > content.clientHeight) {
-          isBoxWithJsonScrollable.value = true;
-        }
-      });
+    nextTick(() => {
+      const content = scrollableContent.value;
 
-    }
+      if (content && content.scrollHeight > content.clientHeight) {
+        isBoxWithJsonScrollable.value = true;
+      }
+    });
 
-    onMounted(checkScrollability);
-
-    if (fieldValeType.value==='string' && props.fieldValue.startsWith("http") ){
-      fieldValeType.value = 'link'
-    } else if(fieldValeType.value==='string' && (
-        props.fieldKey === "created" ||
-        props.fieldKey === "released" ||
-        props.fieldKey ==="edited"
-    ) ){
-      let xd = new Date(props.fieldValue)
-      fieldValeType.value = 'date'
-
-    }else if(fieldValeType.value==='object' && props.fieldValue.length===0){
-      fieldValeType.value = 'string'
-    } else if(fieldValeType.value==='object'){
-      prettyPrintedJSON.value = JSON.stringify(props.fieldValue, null, 4);
-    }
-
-    function formatDate(date) {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric' }
-        return new Date(date).toLocaleDateString('pl', options)
-    }
-
-    function passDataToModal(fieldKey, fieldValue){
-      setCurrentDataInDetailsModal('fieldKey', fieldKey)
-      setCurrentDataInDetailsModal('fieldValue', fieldValue)
-      setCurrentDataInDetailsModal('isBackgroudVisible', true)
-    }
-
-    return {  props, fieldValeType, prettyPrintedJSON, formatDate, isBoxWithJsonScrollable,
-      scrollableContent, passDataToModal  };
   }
 
-}
+  onMounted(checkScrollability);
+
+  if (fieldValeType.value==='string' && props.fieldValue.startsWith("http") ){
+    fieldValeType.value = 'link'
+  } else if (fieldValeType.value==='string' && (
+      props.fieldKey === "created" ||
+      props.fieldKey === "released" ||
+      props.fieldKey ==="edited"
+  ) ){
+    fieldValeType.value = 'date'
+  } else if (fieldValeType.value==='object' && props.fieldValue.length===0){
+      fieldValeType.value = 'string'
+  } else if (fieldValeType.value==='object'){
+      prettyPrintedJSON.value = JSON.stringify(props.fieldValue, null, 4);
+  }
+
+  function formatDate(date) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' }
+    return new Date(date).toLocaleDateString('pl', options)
+  }
+
+  function passDataToModal(fieldKey, fieldValue){
+    setCurrentDataInDetailsModal('fieldKey', fieldKey)
+    setCurrentDataInDetailsModal('fieldValue', fieldValue)
+    setCurrentDataInDetailsModal('isBackgroudVisible', true)
+  }
+
 </script>
+
 
 <style scoped>
   .boxWithJson{

@@ -39,58 +39,46 @@
 
 </template>
 
+<script setup>
+  import {useDataStore} from "@/stores/data";
+  import {storeToRefs} from "pinia";
+  import DataTableHeader from "@/components/DataTableHeader.vue";
+  import {useRouter} from "vue-router";
+  import Pagination from "@/components/Pagination.vue";
+  import {gsap} from "gsap";
+  import {nextTick} from "vue";
+  import {useCurrentDataFromApiStore} from "@/stores/currentDataFromApi";
+  import {useAnimation} from "@/animations/useAnimation.";
 
-<script>
-
-import {useDataStore} from "@/stores/data";
-import {storeToRefs} from "pinia";
-import DataTableHeader from "@/components/DataTableHeader.vue";
-import {useRouter} from "vue-router";
-import Pagination from "@/components/Pagination.vue";
-import {gsap} from "gsap";
-import {nextTick, onMounted, watch, ref} from "vue";
-import {useCurrentDataFromApiStore} from "@/stores/currentDataFromApi";
-import {useAnimation} from "@/animations/useAnimation.";
-
-export default {
-  name: "DataTable",
-  components: {
-    Pagination,
-    DataTableHeader,
-  },
-
-  setup() {
-    const dataFromStore = useDataStore();
-    const currentDataToDisplay = useCurrentDataFromApiStore();
-    const { currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter, endpointsCounter, endpoints_allCounter } = storeToRefs(dataFromStore)
-    const { dataFromApi } = storeToRefs(currentDataToDisplay)
-    const { setItemToEndpointInCurrentApiConfig } = dataFromStore
-    const router = useRouter()
-    const { bump } = useAnimation();
+  const dataFromStore = useDataStore();
+  const currentDataToDisplay = useCurrentDataFromApiStore();
+  const { currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter, endpointsCounter, endpoints_allCounter } = storeToRefs(dataFromStore)
+  const { dataFromApi } = storeToRefs(currentDataToDisplay)
+  const { setItemToEndpointInCurrentApiConfig } = dataFromStore
+  const router = useRouter()
+  const { bump } = useAnimation();
 
 
-    function goToDetails(row){
-      setItemToEndpointInCurrentApiConfig(selectedApiKey.value, selectedEndpointKey.value, 'row', row )
-      let url = row.url.split("/")
-      let id = url[url.length-2]
-      router.push('/details/'+id)
-    }
-
-    currentDataToDisplay.$subscribe((mutation, state) => {
-      endpointIn()
-    })
-
-    function endpointIn(){
-      nextTick(() => {
-        let id = document.getElementsByClassName('rowWithData')
-        gsap.from(id, {duration: 0.5, opacity: 0, x:200,  ease:'elastic.out(0.5, 1.5)', stagger: 0.1});
-      });
-    }
-
-    return { currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter, endpointsCounter, endpoints_allCounter,  goToDetails, dataFromApi, bump  }
+  function goToDetails(row){
+    setItemToEndpointInCurrentApiConfig(selectedApiKey.value, selectedEndpointKey.value, 'row', row )
+    let url = row.url.split("/")
+    let id = url[url.length-2]
+    router.push('/details/'+id)
   }
-}
+
+  currentDataToDisplay.$subscribe((mutation, state) => {
+    endpointIn()
+  })
+
+  function endpointIn(){
+    nextTick(() => {
+      let id = document.getElementsByClassName('rowWithData')
+      gsap.from(id, {duration: 0.5, opacity: 0, x:200,  ease:'elastic.out(0.5, 1.5)', stagger: 0.1});
+    });
+  }
+
 </script>
+
 
 <style scoped>
   .rowsContainer{

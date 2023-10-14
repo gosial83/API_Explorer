@@ -22,41 +22,37 @@
 
 </template>
 
-<script>
-import {useRouter} from "vue-router";
-import {gsap} from "gsap";
-import {SplitText} from "gsap/SplitText";
-import CSSRulePlugin from "gsap/CSSRulePlugin";
-import {onMounted} from "vue";
-import {useAnimation} from "@/animations/useAnimation.";
+<script setup>
+  import {useRouter} from "vue-router";
+  import {onMounted} from "vue";
+  import {useAnimation} from "@/animations/useAnimation.";
+  import {gsap} from "gsap";
+  import {SplitText} from "gsap/SplitText";
+  import CSSRulePlugin from "gsap/CSSRulePlugin";
 
-gsap.registerPlugin(SplitText);
-gsap.registerPlugin(CSSRulePlugin);
+  gsap.registerPlugin(SplitText);
+  gsap.registerPlugin(CSSRulePlugin);
 
+  const router = useRouter()
+  const { bump } = useAnimation();
 
-export default {
-  name: "PageHeader",
-  setup(){
-    const router = useRouter()
-    const { bump } = useAnimation();
+  onMounted (() => {
+    let mySplitText = new SplitText(".myAppName", { type: "words,chars" });
+    let chars = mySplitText.chars;
+    gsap.from(chars, {
+      duration: 1,
+      opacity: 0,
+      rotation: 0,
+      y: -50,
+      ease: "elastic.out(1, 0.3)",
+      stagger: 0.15
+    });
+  })
 
-    onMounted (() => {
-      let mySplitText = new SplitText(".myAppName", { type: "words,chars" });
-      let chars = mySplitText.chars; //an array of all the divs that wrap each character
-      gsap.from(chars, {
-        duration: 1,
-        opacity: 0,
-        rotation: 0,
-        y: -50,
-        ease: "elastic.out(1, 0.3)",
-        stagger: 0.15
-      });
-    })
-
-    return { router, bump  }
-  }
-}
 </script>
+
+
+
 
 <style scoped>
   .pageHeaderContainer{

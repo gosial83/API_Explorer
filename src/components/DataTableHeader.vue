@@ -13,21 +13,16 @@
   </div>
 </template>
 
-<script>
-import {useDataStore} from "@/stores/data";
-import {storeToRefs} from "pinia";
 
-export default {
-  name: "DataTableHeader",
-  setup(){
-    const dataFromStore = useDataStore();
-    const { currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter } = storeToRefs(dataFromStore)
+<script setup>
+  import {useDataStore} from "@/stores/data";
+  import {storeToRefs} from "pinia";
 
-    return {
-      currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter }
-  }
-}
+  const dataFromStore = useDataStore();
+  const { currentApiConfig, selectedApiKey, selectedEndpointKey, columnsCounter } = storeToRefs(dataFromStore)
 </script>
+
+
 
 <style scoped>
 
